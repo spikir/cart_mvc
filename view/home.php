@@ -1,15 +1,15 @@
 <?php include ('header.php')?>
 <div class="rightbox">
 	<p>
-		<form action="index.php?page=sort" method="POST">
+		<form action="index.php" method="GET">
 			Sort items
 			<select id="sort" name="sort">
-				<option value="product_id ASC" <?php if(isset($_POST['sort']) && $_POST['sort']== 'product_id ASC') { echo 'selected="selected"';  }?> >ID ASC</option>
-				<option value="product_title ASC" <?php if(isset($_POST['sort']) && $_POST['sort'] == 'product_title ASC') { echo 'selected="selected"';  }?> >Title ASC</option>
-				<option value="product_price ASC" <?php if(isset($_POST['sort']) && $_POST['sort'] == 'product_price ASC') { echo 'selected="selected"';  }?> >Price ASC</option>
-				<option value="product_id DESC" <?php if(isset($_POST['sort']) && $_POST['sort'] == 'product_id DESC') { echo 'selected="selected"';  }?> >ID DESC</option>
-				<option value="product_title DESC" <?php if(isset($_POST['sort']) && $_POST['sort'] == 'product_title DESC') { echo 'selected="selected"';  }?> >Title DESC</option>
-				<option value="product_price DESC" <?php if(isset($_POST['sort']) && $_POST['sort'] == 'product_price DESC') { echo 'selected="selected"';  }?> >Price DESC</option>
+				<option value="product_id ASC" <?php if(isset($_GET['sort']) && $_GET['sort']== 'product_id ASC') { echo 'selected="selected"';  }?> >ID ASC</option>
+				<option value="product_title ASC" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_title ASC') { echo 'selected="selected"';  }?> >Title ASC</option>
+				<option value="product_price ASC" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_price ASC') { echo 'selected="selected"';  }?> >Price ASC</option>
+				<option value="product_id DESC" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_id DESC') { echo 'selected="selected"';  }?> >ID DESC</option>
+				<option value="product_title DESC" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_title DESC') { echo 'selected="selected"';  }?> >Title DESC</option>
+				<option value="product_price DESC" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_price DESC') { echo 'selected="selected"';  }?> >Price DESC</option>
 			</select>
 			<button type="submit" name="submit">
 				<span>Sort</span>
@@ -36,7 +36,7 @@
 							echo '<tr>';
 								echo '<form action="index.php?page=updatecart" method="POST">';
 									echo '<td>'.$value['product_id'].'</td>';
-									echo '<td><img src="'.$value['product_image'].'" /></td>';
+									echo '<td><img src="'.$value['product_image'].'" width="250" height="200"/></td>';
 									echo '<td>'.$value['product_title'].'</td>';
 									echo '<td>'.$value['product_desc'].'</td>';
 									echo '<td>'.$value['product_price'].'</td>';
@@ -57,6 +57,15 @@
 					}
 			echo '</tbody>';
 		echo '</table>';
+		echo '<div class="paging">';
+			for($i=1; $i<=$pageNumbers; $i++) {
+				if(isset($_GET['sort'])) {
+					echo '<a href="index.php?sort='.$_GET['sort'].'&paging='.$i.'">'.$i.'</a>';
+				} else {
+					echo '<a href="index.php?page=home&paging='.$i.'">'.$i.'</a>';
+				}
+			}
+		echo '</div>';
 	?>
 </div>
 <?php include ('footer.php')?>

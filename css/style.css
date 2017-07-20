@@ -6,7 +6,7 @@
 	background-color: #000;
 	padding-top: 1%;
 	padding-bottom: 1%;
-	border-radius: 2% / 6%;
+	border-radius: 2% / 2%;
 }
 
 .header {
@@ -74,6 +74,12 @@
 	background-color: #D3D3D3;
 	margin-right: 1%;
 	padding: 1%;
+}
+
+.paging {
+	margin: auto;
+	width: auto;
+	text-align: center;
 }
 
 .footer {

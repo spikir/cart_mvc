@@ -6,6 +6,7 @@
 			
 		public function __construct() {
 			$this->model = new Model();
+			$sort = ''; 
 		}
 			
 		public function invoke() {
@@ -13,6 +14,18 @@
 				if(isset($_GET['email']) && isset($_GET['hash'])) {
 					$result = $this->model->getVerifyUser();
 					include ('view/login.php');
+				} else if(isset($_GET['sort'])) {
+					if(isset($_GET['sort'])) {
+						$sort = $_GET['sort'];
+					}
+					$lastSpace = strpos($sort, " ");
+					$order = substr($sort, $lastSpace+1);
+					$sort = substr($sort, 0, $lastSpace);
+					$products = $this->model->getArticles($sort, $order);
+					$totalItems = $this->model->getTotalItems();
+					$pageNumbers = $totalItems['row']/10;
+					$pageNumbers = ceil($pageNumbers);
+					include ('view/home.php');
 				} else {
 					Header ('Location: index.php?page=home');
 				}
@@ -23,6 +36,9 @@
 						$sort = 'product_id';
 						$order = 'ASC';
 						$products = $this->model->getArticles($sort, $order);
+						$totalItems = $this->model->getTotalItems();
+						$pageNumbers = $totalItems['row']/10;
+						$pageNumbers = ceil($pageNumbers);
 						include ('view/home.php');
 						break;
 					
@@ -88,15 +104,6 @@
 					case 'search';
 						$search =  $this->model->getSearch();
 						include('view/search.php');
-						break;
-					
-					case 'sort';
-						$sort = $_POST['sort'];
-						$lastSpace = strpos($sort, " ");
-						$order = substr($sort, $lastSpace+1);
-						$sort = substr($sort, 0, $lastSpace);
-						$products = $this->model->getArticles($sort, $order);
-						include ('view/home.php');
 						break;
 				}
 			}

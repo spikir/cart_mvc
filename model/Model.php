@@ -165,6 +165,7 @@
 						if($stmt) {
 							mysqli_stmt_bind_param($stmt, 'ss', $email, $hash);
 							mysqli_stmt_execute($stmt);
+							mysqli_stmt_close($stmt);
 							return 'activated';
 						}
 					} else {
@@ -179,8 +180,16 @@
 		public function getArticles($sort, $order) {
 			$conn = $this->connection->connect();
 			
-			$stmt = mysqli_prepare($conn, "SELECT product_id, product_image, product_title, product_desc, product_price FROM products ORDER BY ".$sort." ".$order."");
-	
+			$paging = 0;
+			
+			if(isset($_GET['paging'])) {
+				$paging = $_GET['paging'];
+				$paging = $paging * 10;
+				$paging = $paging - 10;
+			}
+
+			$stmt = mysqli_prepare($conn, "SELECT product_id, product_image, product_title, product_desc, product_price FROM products ORDER BY ".$sort." ".$order." LIMIT ".$paging.", 10");
+			
 			if($stmt) {
 				mysqli_stmt_execute($stmt);
 				$result = mysqli_stmt_get_result($stmt);
@@ -205,6 +214,7 @@
 					mysqli_stmt_execute($stmt);
 					$result = mysqli_stmt_get_result($stmt);
 					$orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+					mysqli_stmt_close($stmt);
 					return $orders;
 				}
 			} else {
@@ -270,6 +280,7 @@
 				$stmt = mysqli_prepare($conn, "INSERT INTO orders (order_date, order_product_id, order_user_id) VALUES (?, ?, ?)");
 				mysqli_stmt_bind_param($stmt, 'sss', $date, $product_id, $user_id);
 				mysqli_stmt_execute($stmt);
+				mysqli_stmt_close($stmt);
 			}
 			unset($_SESSION['cart_products']);
 		}
@@ -294,6 +305,18 @@
 			} else {
 				return array();
 			}
+		}
+		
+		public function getTotalItems() {
+			$conn = $this->connection->connect();
+			$stmt = mysqli_prepare($conn, "SELECT COUNT(product_id) as row FROM products");	
+			if($stmt) {
+				mysqli_stmt_execute($stmt);
+				$result = mysqli_stmt_get_result($stmt);
+				$total = mysqli_fetch_assoc($result);
+				mysqli_stmt_close($stmt);
+			}
+			return $total;
 		}
 	}
 ?>

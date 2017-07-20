@@ -10,7 +10,7 @@
 						echo '<tr>';
 							echo '<form action="index.php?page=updatecart" method="POST">';
 								echo '<td>'.$value['product_id'].'</td>';
-								echo '<td><img src="'.$value['product_image'].'" /></td>';
+								echo '<td><img src="'.$value['product_image'].'" width="150" height="100"/></td>';
 								echo '<td>'.$value['product_title'].'</td>';
 								echo '<td>'.$value['product_desc'].'</td>';
 								echo '<td>'.$value['product_price'].'</td>';
@@ -24,6 +24,7 @@
 				}
 			echo '</tbody>';
 		echo '</table>';
+		
 	?>
 </div>
 <?php include ('footer.php')?>
